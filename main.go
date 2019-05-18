@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/kylesliu/gin_metrics"
+	gin_metrics "github.com/kylesliu/gin_exporter"
 	"math/rand"
 	"strconv"
 	"time"
@@ -12,6 +12,7 @@ import (
 func main() {
 	app := gin.New()
 	gin.SetMode(gin.DebugMode)
+	gin_metrics.Default(app)
 
 	app.GET("rand_str", func(c *gin.Context) {
 		c.JSON(200, getRandomString(32))
@@ -31,8 +32,6 @@ func main() {
 			c.JSON(200, time.Now())
 		})
 	}
-
-	gin_metrics.Default(app)
 
 	if err := app.Run("127.0.0.1:9000"); err != nil {
 		panic(err.Error())
